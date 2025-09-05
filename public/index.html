@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playwright Service - Browser Automation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #718096;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .status-healthy { background: #48bb78; color: white; }
+        .status-unhealthy { background: #f56565; color: white; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .card p {
+            color: #718096;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #5a67d8;
+        }
+        
+        .browser-list {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .browser-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .browser-enabled { background: #c6f6d5; color: #22543d; }
+        .browser-disabled { background: #fed7d7; color: #742a2a; }
+        
+        .api-endpoint {
+            background: #f7fafc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #667eea;
+            margin: 10px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .error {
+            background: #fed7d7;
+            color: #742a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Playwright Service</h1>
+            <p>Browser Automation & Testing Platform</p>
+            <div id="status" class="loading">Loading service status...</div>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>🚀 Quick Start</h3>
+                <p>Get started with browser automation using our REST API or MCP integration for Claude Code.</p>
+                <div class="api-endpoint">POST /api/tests/run</div>
+                <div class="api-endpoint">POST /api/tests/screenshot</div>
+                <div class="api-endpoint">POST /api/tests/extract</div>
+                <a href="/api" class="btn">View API Documentation</a>
+            </div>
+            
+            <div class="card">
+                <h3>🌐 Browser Support</h3>
+                <p>Support for multiple browser engines with headless and headed modes.</p>
+                <div id="browsers" class="browser-list">
+                    <span class="browser-badge browser-enabled">Loading...</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Test Reports</h3>
+                <p>View recent test results, screenshots, videos, and detailed execution reports.</p>
+                <a href="/reports" class="btn">View Reports</a>
+            </div>
+            
+            <div class="card">
+                <h3>🔧 MCP Integration</h3>
+                <p>Seamlessly integrate with Claude Code using our Model Context Protocol server.</p>
+                <div class="api-endpoint">mcp-playwright tools available</div>
+                <p style="font-size: 0.9em; color: #718096;">
+                    • run_browser_test<br>
+                    • navigate_and_screenshot<br>
+                    • extract_page_data<br>
+                    • fill_form_and_submit
+                </p>
+            </div>
+            
+            <div class="card">
+                <h3>📁 Artifacts</h3>
+                <p>Access generated screenshots, videos, traces, and test reports.</p>
+                <a href="/screenshots" class="btn">Screenshots</a>
+                <a href="/videos" class="btn">Videos</a>
+            </div>
+            
+            <div class="card">
+                <h3>💡 Features</h3>
+                <p>Comprehensive browser automation capabilities:</p>
+                <ul style="margin-left: 20px; color: #718096; line-height: 1.8;">
+                    <li>Multi-browser support</li>
+                    <li>Screenshot & video capture</li>
+                    <li>Form automation</li>
+                    <li>Data extraction</li>
+                    <li>Real-time WebSocket updates</li>
+                    <li>Test result persistence</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Playwright Service running on ai-servicers.com infrastructure</p>
+            <p>Part of the Claude Code development ecosystem</p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch and display service status
+        async function loadStatus() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                const statusEl = document.getElementById('status');
+                statusEl.innerHTML = `
+                    <span class="status-badge status-healthy">Service Healthy</span><br>
+                    <small>Version: ${data.version} | Environment: ${data.environment}</small>
+                `;
+                
+                // Update browser status
+                const browsersEl = document.getElementById('browsers');
+                browsersEl.innerHTML = '';
+                
+                Object.entries(data.browsers).forEach(([browser, enabled]) => {
+                    const badge = document.createElement('span');
+                    badge.className = `browser-badge ${enabled ? 'browser-enabled' : 'browser-disabled'}`;
+                    badge.textContent = browser;
+                    browsersEl.appendChild(badge);
+                });
+                
+            } catch (error) {
+                const statusEl = document.getElementById('status');
+                statusEl.innerHTML = `
+                    <span class="status-badge status-unhealthy">Service Unavailable</span><br>
+                    <small>Error: ${error.message}</small>
+                `;
+                
+                const browsersEl = document.getElementById('browsers');
+                browsersEl.innerHTML = '<span class="browser-badge browser-disabled">Unable to load</span>';
+            }
+        }
+        
+        // Load status on page load
+        document.addEventListener('DOMContentLoaded', loadStatus);
+        
+        // Refresh status every 30 seconds
+        setInterval(loadStatus, 30000);
+    </script>
+</body>
+</html>
