@@ -44,14 +44,14 @@ echo -e "${YELLOW}Deploying container...${NC}"
 docker run -d \
   --name ${PROJECT_NAME} \
   --restart unless-stopped \
-  --network traefik-proxy \
+  --network traefik-net \
   --env-file /home/administrator/secrets/${PROJECT_NAME}.env \
   --volume /home/administrator/projects/playwright/data/reports:/app/reports \
   --volume /home/administrator/projects/playwright/data/screenshots:/app/screenshots \
   --volume /home/administrator/projects/playwright/data/videos:/app/videos \
   --volume /home/administrator/projects/playwright/data/traces:/app/traces \
   --label "traefik.enable=true" \
-  --label "traefik.docker.network=traefik-proxy" \
+  --label "traefik.docker.network=traefik-net" \
   --label "traefik.http.routers.${PROJECT_NAME}.rule=Host(\`${PROJECT_NAME}.ai-servicers.com\`)" \
   --label "traefik.http.routers.${PROJECT_NAME}.entrypoints=websecure" \
   --label "traefik.http.routers.${PROJECT_NAME}.tls.certresolver=letsencrypt" \
