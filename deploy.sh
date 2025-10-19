@@ -13,11 +13,11 @@ NC='\033[0m'
 echo -e "${GREEN}🎭 Deploying Playwright service...${NC}"
 
 # Load environment
-if [ -f "/home/administrator/secrets/${PROJECT_NAME}.env" ]; then
-    source /home/administrator/secrets/${PROJECT_NAME}.env
+if [ -f "$HOME/projects/secrets/${PROJECT_NAME}.env" ]; then
+    source $HOME/projects/secrets/${PROJECT_NAME}.env
     echo -e "${GREEN}✓${NC} Environment loaded"
 else
-    echo -e "${RED}✗${NC} Environment file not found at /home/administrator/secrets/${PROJECT_NAME}.env"
+    echo -e "${RED}✗${NC} Environment file not found at $HOME/projects/secrets/${PROJECT_NAME}.env"
     exit 1
 fi
 
@@ -45,7 +45,7 @@ docker run -d \
   --name ${PROJECT_NAME} \
   --restart unless-stopped \
   --network traefik-net \
-  --env-file /home/administrator/secrets/${PROJECT_NAME}.env \
+  --env-file $HOME/projects/secrets/${PROJECT_NAME}.env \
   --volume /home/administrator/projects/playwright/data/reports:/app/reports \
   --volume /home/administrator/projects/playwright/data/screenshots:/app/screenshots \
   --volume /home/administrator/projects/playwright/data/videos:/app/videos \

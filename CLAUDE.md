@@ -8,7 +8,7 @@
 
 ## Configuration
 - Project Name: playwright
-- Environment: /home/administrator/secrets/playwright.env
+- Environment: $HOME/projects/secrets/playwright.env
 - Container: playwright
 - MCP Server: /home/administrator/projects/mcp-playwright
 
@@ -66,11 +66,11 @@
 - **Traces**: `/home/administrator/projects/playwright/data/traces/`
 
 ## Docker Networks
-- `traefik-proxy`: Web access via Traefik
+- `traefik-net`: Web access via Traefik
 - `redis-net`: Optional queue management
 
 ## Environment Variables
-Key configuration in `/home/administrator/secrets/playwright.env`:
+Key configuration in `$HOME/projects/secrets/playwright.env`:
 - `APP_PORT`: Application port (3000)
 - `PLAYWRIGHT_BROWSERS_PATH`: Browser binaries path
 - `MAX_CONCURRENT_TESTS`: Concurrent test limit (5)
@@ -159,10 +159,10 @@ curl -X POST https://playwright.ai-servicers.com/api/tests/extract \
 ## Integration Points
 - **Redis**: Queue management (optional) - connected to redis-net
 - **MinIO**: Artifact storage for screenshots/videos
-- **Traefik**: HTTPS termination and routing via traefik-proxy network
+- **Traefik**: HTTPS termination and routing via traefik-net network
 - **Claude Code**: Direct MCP integration via stdio transport
 - **Dashy**: Listed in Developer Tools section for easy access
-- **Docker Networks**: traefik-proxy (web access), redis-net (queue)
+- **Docker Networks**: traefik-net (web access), redis-net (queue)
 
 ## Troubleshooting Log
 - [2025-09-05]: Initial deployment completed
